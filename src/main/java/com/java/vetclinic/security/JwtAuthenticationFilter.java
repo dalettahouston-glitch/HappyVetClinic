@@ -1,6 +1,6 @@
 package com.java.vetclinic.security;
 
-import com.example.jwtdemo.service.CustomUserDetailsService;
+import com.java.vetclinic.service.CustomUserDetailsService;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.security.SignatureException;

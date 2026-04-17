@@ -1,11 +1,13 @@
 package com.java.vetclinic.controller;
 
-import import com.example.jwtdemo.dto.*;
-import com.example.jwtdemo.entity.User;
-import com.example.jwtdemo.entity.Role;
-import com.example.jwtdemo.repository.UserRepository;
-import com.example.jwtdemo.security.JwtUtil;
+import com.java.vetclinic.dto.AuthRequest;
 import com.java.vetclinic.dto.AuthResponse;
+import com.java.vetclinic.dto.RefreshRequest;
+import com.java.vetclinic.dto.RegisterRequest;
+import com.java.vetclinic.entity.Role;
+import com.java.vetclinic.entity.User;
+import com.java.vetclinic.repository.UserRepository;
+import com.java.vetclinic.security.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -69,6 +71,7 @@ public class AuthController {
     public ResponseEntity<AuthResponse> refresh(@RequestBody RefreshRequest request) {
         try {
             String token = request.refreshToken();
+
 
             // Make sure this is actually a refresh token, not an access token
             if (!"refresh".equals(jwtUtil.extractType(token))) {

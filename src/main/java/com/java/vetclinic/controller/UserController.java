@@ -2,6 +2,7 @@ package com.java.vetclinic.controller;
 
 import com.java.vetclinic.entity.User;
 import com.java.vetclinic.service.UserService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,6 +23,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN') or #id == authentication.principal.id")
     public User getOwnerById(@PathVariable Long id) {
         return userService.getOwnerById(id);
     }
@@ -32,11 +34,13 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN') or #id == authentication.principal.id")
     public User updateOwner(@PathVariable Long id, @RequestBody User user) {
         return userService.updateOwner(id, user);
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public void deleteOwner(@PathVariable Long id) {
         userService.deleteOwner(id);
     }

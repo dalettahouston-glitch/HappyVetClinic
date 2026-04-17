@@ -33,10 +33,7 @@ public class UserService {
             return null;
         }
 
-        existing.setFirstName(updatedUser.getFirstName());
-        existing.setLastName(updatedUser.getLastName());
-        existing.setPhone(updatedUser.getPhone());
-        existing.setEmail(updatedUser.getEmail());
+
 
         return userRepository.save(existing);
     }
