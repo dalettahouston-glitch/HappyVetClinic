@@ -8,7 +8,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/owners")
+@RequestMapping("/users")
+
 public class UserController {
 
     private final UserService userService;
@@ -28,13 +29,7 @@ public class UserController {
         return userService.getOwnerById(id);
     }
 
-    @PostMapping
-    public User createOwner(@RequestBody User user) {
-        return userService.createOwner(user);
-    }
-
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN') or #id == authentication.principal.id")
     public User updateOwner(@PathVariable Long id, @RequestBody User user) {
         return userService.updateOwner(id, user);
     }

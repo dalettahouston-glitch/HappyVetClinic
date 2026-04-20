@@ -55,7 +55,10 @@ public class AuthController {
         User user = User.builder()
                 .username(request.username())
                 .password(passwordEncoder.encode(request.password()))
-                .role(Role.ROLE_USER) // new users always start as ROLE_USER
+                .role(request.role()) // new users always start as ROLE_USER
+                .name (request.name())
+                .phone(request.phone())
+                .email(request.email())
                 .build();
 
         userRepository.save(user);

@@ -34,9 +34,20 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    @Column(nullable = false)
+    private String name;
+
+    @Column(nullable = false)
+    private String email;
+
+    @Column(nullable = false)
+    private String phone;
+
     // --- UserDetails implementation ---
     // Spring Security calls these methods to check your user's status.
-
+    public Long getId(){
+        return id;
+    }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         // Converts our Role enum into a Spring Security authority
