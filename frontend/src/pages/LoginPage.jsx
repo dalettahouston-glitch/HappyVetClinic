@@ -16,8 +16,8 @@ export default function LoginPage() {
     try {
       const response = await login({ username, password });
 
-      if (response.data.token) {
-        localStorage.setItem("token", response.data.token);
+      if (response.data.accessToken) {
+        localStorage.setItem("token", response.data.accessToken);
       }
 
       navigate("/");
