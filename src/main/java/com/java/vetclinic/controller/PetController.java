@@ -2,11 +2,10 @@ package com.java.vetclinic.controller;
 
 import com.java.vetclinic.entity.Pet;
 import com.java.vetclinic.service.PetService;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+@CrossOrigin(origins = "http://localhost:5173" )
 @RestController
 @RequestMapping("/pets")
 public class PetController {
