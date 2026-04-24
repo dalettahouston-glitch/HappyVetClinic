@@ -1,16 +1,85 @@
-# React + Vite
+# Happy Vet Clinic
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A full-stack veterinary clinic management system built as a capstone project.
 
-Currently, two official plugins are available:
+## 🐾 About
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Happy Vet Clinic is a web application that allows pet owners to manage their pets, book appointments with veterinarians, and view available services. Administrators can manage all users, pets, vets, appointments, and services.
 
-## React Compiler
+## 🚀 Technologies Used
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### Backend
+- Java Spring Boot
+- Spring Security with JWT Authentication
+- Spring Data JPA
+- MySQL Database
+- Maven
 
-## Expanding the ESLint configuration
+### Frontend
+- React 18
+- Vite
+- Tailwind CSS v4
+- Axios
+- React Router DOM
+- Lucide React Icons
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## ✨ Features
+
+### User Side
+- Landing page with clinic information
+- User registration and login
+- View all pets and vets
+- Book and cancel appointments
+- View personal appointments only
+
+### Admin Side
+- Admin dashboard with clinic stats
+- Manage all users, pets, vets, appointments, and services
+- Create appointments on behalf of users
+- Delete any record
+
+## 🛠️ How to Run
+
+### Backend
+1. Make sure MySQL is running
+2. Create a database called `happyvetclinic`
+3. Update `application.properties` with your database credentials
+4. Run `VetClinicApplication.java` in IntelliJ
+
+### Frontend
+1. Navigate to the frontend folder
+2. Install dependencies:
+```bash
+npm install
+```
+3. Start the dev server:
+```bash
+npm run dev
+```
+4. Open `http://localhost:5173`
+
+## 🔐 Default Users
+
+| Role | Username | Password |
+|------|----------|----------|
+| Admin | tina | smart123 |
+| User | daletta | password |
+
+## 📁 Project Structure
+HappyVetClinic/
+├── backend/          # Spring Boot API
+│   ├── controller/   # REST endpoints
+│   ├── entity/       # Database models
+│   ├── repository/   # Data access
+│   ├── service/      # Business logic
+│   └── security/     # JWT auth
+└── frontend/         # React app
+├── src/
+│   ├── pages/    # Page components
+│   ├── components/ # Reusable components
+│   ├── services/ # API calls
+│   └── context/  # Auth context
+
+## 👩‍💻 Developer
+
+Daletta Houston — Capstone Project 2026
