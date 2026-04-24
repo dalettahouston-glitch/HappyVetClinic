@@ -1,15 +1,22 @@
 import { useEffect, useState } from "react";
-import { getAllPets } from "@/services/petService";
+import { useAuth } from "@/context/AuthContext";
+import api from "@/api";
 import { X } from "lucide-react";
 
 export default function PetsPage() {
+  const { user } = useAuth();
   const [pets, setPets] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [selectedPet, setSelectedPet] = useState(null);
 
+  const isAdmin = user?.role === "ROLE_ADMIN";
+
   useEffect(() => {
-    getAllPets()
+    if (!user) return;
+    const url = isAdmin ? "/pets" : `/pets/user/${user.id}`;
+
+    api.get(url)
       .then((response) => {
         setPets(response.data);
         setLoading(false);
@@ -18,7 +25,7 @@ export default function PetsPage() {
         setError("Failed to load pets");
         setLoading(false);
       });
-  }, []);
+  }, [user]);
 
   return (
     <div className="space-y-6">
@@ -36,10 +43,7 @@ export default function PetsPage() {
           {pets.map((pet) => (
             <div
               key={pet.id}
-              onClick={() => {
-                console.log("pet clicked", pet);
-                setSelectedPet(pet);
-              }}
+              onClick={() => setSelectedPet(pet)}
               className="bg-white border border-gray-200 rounded-xl p-6 hover:shadow-md transition-shadow cursor-pointer"
             >
               <div className="flex items-center justify-between mb-4">

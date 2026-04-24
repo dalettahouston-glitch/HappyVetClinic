@@ -23,6 +23,10 @@ public class PetService {
         return petRepository.findAll();
     }
 
+    public List<Pet> getPetsByOwner(Long ownerId) {
+        return petRepository.findByUser_Id(ownerId);
+    }
+
     public Pet getPetById(Long id) {
         return petRepository.findById(id).orElse(null);
     }
@@ -32,7 +36,6 @@ public class PetService {
         if (user == null) {
             return null;
         }
-
         pet.setUser(user);
         return petRepository.save(pet);
     }
@@ -42,12 +45,10 @@ public class PetService {
         if (existing == null) {
             return null;
         }
-
         existing.setName(updatedPet.getName());
         existing.setType(updatedPet.getType());
         existing.setBreed(updatedPet.getBreed());
         existing.setAge(updatedPet.getAge());
-
         return petRepository.save(existing);
     }
 

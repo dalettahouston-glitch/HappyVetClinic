@@ -2,10 +2,12 @@ package com.java.vetclinic.controller;
 
 import com.java.vetclinic.entity.Pet;
 import com.java.vetclinic.service.PetService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-@CrossOrigin(origins = "http://localhost:5173" )
+
+@CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @RequestMapping("/api/pets")
 public class PetController {
@@ -17,31 +19,31 @@ public class PetController {
     }
 
     @GetMapping
-   // @PreAuthorize("hasRole('ADMIN') or #id == authentication.principal.id")
     public List<Pet> getAllPets() {
         return petService.getAllPets();
     }
 
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<Pet>> getPetsByUser(@PathVariable Long userId) {
+        return ResponseEntity.ok(petService.getPetsByOwner(userId));
+    }
+
     @GetMapping("/{id}")
-   // @PreAuthorize("hasRole('ADMIN') or #id == authentication.principal.id")
     public Pet getPetById(@PathVariable Long id) {
         return petService.getPetById(id);
     }
 
     @PostMapping("/owner/{ownerId}")
-//    @PreAuthorize("hasRole('ADMIN') or #id == authentication.principal.id")
     public Pet createPet(@PathVariable Long ownerId, @RequestBody Pet pet) {
         return petService.createPet(ownerId, pet);
     }
 
     @PutMapping("/{id}")
-    //@PreAuthorize("hasRole('ADMIN') or #id == authentication.principal.id")
     public Pet updatePet(@PathVariable Long id, @RequestBody Pet pet) {
         return petService.updatePet(id, pet);
     }
 
     @DeleteMapping("/{id}")
-   // @PreAuthorize("hasRole('ADMIN')")
     public void deletePet(@PathVariable Long id) {
         petService.deletePet(id);
     }
