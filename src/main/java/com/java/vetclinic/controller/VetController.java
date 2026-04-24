@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/vets")
+@RequestMapping("/api/vets")
 public class VetController {
 
     private final VetService vetService;

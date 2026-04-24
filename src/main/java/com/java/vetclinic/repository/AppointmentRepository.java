@@ -3,5 +3,8 @@ package com.java.vetclinic.repository;
 import com.java.vetclinic.entity.Appointment;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
+
 public interface AppointmentRepository extends JpaRepository<Appointment, Long> {
+    List<Appointment> findByUser_Id(Long userId);
 }

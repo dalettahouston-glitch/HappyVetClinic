@@ -1,56 +1,64 @@
 import { useState } from "react";
-import { login } from "../services/authService";
-import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/context/AuthContext";
 
 export default function LoginPage() {
-  const navigate = useNavigate();
-
+  const { login } = useAuth();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const handleSubmit = async (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     setError("");
-
     try {
-      const response = await login({ username, password });
-
-      if (response.data.accessToken) {
-        localStorage.setItem("token", response.data.accessToken);
-      }
-
-      navigate("/");
+      await login(username, password);
     } catch (err) {
-      setError("Invalid username or password");
+      setError("Invalid username or password.");
     }
   };
 
   return (
-    <div style={{ maxWidth: "400px", margin: "50px auto" }}>
-      <h1>Login</h1>
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
+      <div className="w-full max-w-md bg-white border border-gray-200 rounded-xl p-8 shadow-sm">
+        <h1 className="text-2xl font-medium mb-6 text-center text-gray-900">
+          Happy Vet Clinic
+        </h1>
 
-      {error && <p style={{ color: "red" }}>{error}</p>}
+        {error && (
+          <p className="text-red-500 text-center mb-4">{error}</p>
+        )}
 
-      <form onSubmit={handleSubmit}>
-        <label>Username</label>
-        <input
-          type="text"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          required
-        />
+        <form onSubmit={handleLogin} className="space-y-4">
+          <div>
+            <label className="block text-sm mb-1 text-gray-700">Username</label>
+            <input
+              type="text"
+              className="w-full px-3 py-2 rounded-lg bg-gray-50 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-teal-600"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              required
+            />
+          </div>
 
-        <label>Password</label>
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
+          <div>
+            <label className="block text-sm mb-1 text-gray-700">Password</label>
+            <input
+              type="password"
+              className="w-full px-3 py-2 rounded-lg bg-gray-50 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-teal-600"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
 
-        <button type="submit">Login</button>
-      </form>
+          <button
+            type="submit"
+            className="w-full py-2 rounded-lg bg-teal-600 text-white hover:bg-teal-700 transition"
+          >
+            Login
+          </button>
+        </form>
+      </div>
     </div>
   );
 }

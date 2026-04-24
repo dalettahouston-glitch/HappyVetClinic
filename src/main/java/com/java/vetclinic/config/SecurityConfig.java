@@ -26,7 +26,7 @@ import java.util.List;
 
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity  // <-- THIS LINE enables @PreAuthorize annotations on controller methods
+@EnableMethodSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
 
@@ -36,34 +36,15 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                // Disable CSRF because we're using stateless JWT tokens, not cookies
                 .csrf(csrf -> csrf.disable())
-
-                // Enable CORS so React on port 3000 can call the API on port 8080
                 .cors(Customizer.withDefaults())
-
-                // Don't create HTTP sessions — every request must carry its own JWT
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-
-                // Define which URLs require what level of access
                 .authorizeHttpRequests(auth -> auth
-                        // Anyone can call /api/auth/** (login, register, refresh) without a token
                         .requestMatchers("/api/auth/**").permitAll()
-
-                        // Only ADMIN users can call /api/admin/**
-                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
-
-                        // All other /api/** endpoints require the user to be logged in (any role)
-                        .requestMatchers("/api/**").authenticated()
-
-                        // Anything else (like static files) is open
+                        .requestMatchers("/api/**").permitAll()
                         .anyRequest().permitAll()
                 )
-
-                // Use our custom auth provider (which uses our UserDetailsService + BCrypt)
                 .authenticationProvider(authenticationProvider())
-
-                // Add our JWT filter BEFORE Spring Security's default authentication filter
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
@@ -90,10 +71,10 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of("http://localhost:5173")); // React dev server
+        config.setAllowedOrigins(List.of("http://localhost:5173"));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
-        config.setAllowCredentials(true);
+        config.setAllowCredentials(false);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);

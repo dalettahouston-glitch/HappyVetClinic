@@ -8,10 +8,14 @@ import com.java.vetclinic.repository.AppointmentRepository;
 import com.java.vetclinic.repository.UserRepository;
 import com.java.vetclinic.repository.PetRepository;
 import com.java.vetclinic.repository.VetRepository;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
-@RequestMapping("/appointments")
+@RequestMapping("/api/appointments")
+@CrossOrigin(origins = "http://localhost:5173")
 public class AppointmentController {
 
     private final AppointmentRepository appointmentRepository;
@@ -29,12 +33,21 @@ public class AppointmentController {
         this.vetRepository = vetRepository;
     }
 
-    @PostMapping
-    public Appointment createAppointment(@RequestParam Long ownerId,
-                                         @RequestParam Long petId,
-                                         @RequestParam Long vetId,
-                                         @RequestBody Appointment appointment) {
+    @GetMapping
+    public ResponseEntity<List<Appointment>> getAllAppointments() {
+        return ResponseEntity.ok(appointmentRepository.findAll());
+    }
 
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<Appointment>> getAppointmentsByUser(@PathVariable Long userId) {
+        return ResponseEntity.ok(appointmentRepository.findByUser_Id(userId));
+    }
+
+    @PostMapping
+    public ResponseEntity<Appointment> createAppointment(@RequestParam Long ownerId,
+                                                         @RequestParam Long petId,
+                                                         @RequestParam Long vetId,
+                                                         @RequestBody Appointment appointment) {
         User user = userRepository.findById(ownerId).orElse(null);
         Pet pet = petRepository.findById(petId).orElse(null);
         Vet vet = vetRepository.findById(vetId).orElse(null);
@@ -43,6 +56,12 @@ public class AppointmentController {
         appointment.setPet(pet);
         appointment.setVet(vet);
 
-        return appointmentRepository.save(appointment);
+        return ResponseEntity.ok(appointmentRepository.save(appointment));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteAppointment(@PathVariable Long id) {
+        appointmentRepository.deleteById(id);
+        return ResponseEntity.ok().build();
     }
 }
