@@ -19,10 +19,11 @@ export default function DashboardPage() {
         if (!user) return;
         const isAdmin = user?.role === "ROLE_ADMIN";
         const apptUrl = isAdmin ? "/appointments" : `/appointments/user/${user?.id}`;
+        const petsUrl = isAdmin ? "/pets" : `/pets/user/${user?.id}`;
 
         Promise.all([
-            api.get("/pets"),
-            api.get("/appointments"),
+            api.get(petsUrl),
+            isAdmin ? api.get("/appointments") : api.get(`/appointments/user/${user?.id}`),
             api.get("/vets"),
             api.get("/services"),
             api.get(apptUrl),
@@ -40,8 +41,8 @@ export default function DashboardPage() {
     }, [user]);
 
     const stats = [
-        { label: "Total Pets", value: counts.pets, icon: PawPrint, color: "bg-teal-50 text-teal-600", path: "/pets" },
-        { label: "Appointments", value: counts.appointments, icon: Calendar, color: "bg-blue-50 text-blue-600", path: "/appointments" },
+        { label: "My Pets", value: counts.pets, icon: PawPrint, color: "bg-teal-50 text-teal-600", path: "/pets" },
+        { label: "My Appointments", value: counts.appointments, icon: Calendar, color: "bg-blue-50 text-blue-600", path: "/appointments" },
         { label: "Vets", value: counts.vets, icon: Stethoscope, color: "bg-purple-50 text-purple-600", path: "/vets" },
         { label: "Services", value: counts.services, icon: Heart, color: "bg-pink-50 text-pink-600", path: "/services" },
     ];
